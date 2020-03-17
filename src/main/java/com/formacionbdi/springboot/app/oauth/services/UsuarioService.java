@@ -21,7 +21,7 @@ import com.formacionbdi.springboot.app.oauth.clients.UsuarioFeignClient;
  * Class UsuarioService. Se implemtane una interface propia de Spring Security.
  */
 @Service
-public class UsuarioService implements UserDetailsService {
+public class UsuarioService implements IUsuarioService, UserDetailsService {
 
 	/**
 	 * Variable Log.
@@ -49,11 +49,16 @@ public class UsuarioService implements UserDetailsService {
 				.map(role -> new SimpleGrantedAuthority(role.getNombre()))
 				.peek(authority -> log.info(String.format("Role: %s", authority.getAuthority())))
 				.collect(Collectors.toList());
-		
+
 		log.info(String.format("Usuario autenticado: %s", username));
-		
+
 		return new User(usuario.getUsername(), usuario.getPassword(), usuario.getEnabled(), true, true, true,
 				authorities);
+	}
+
+	@Override
+	public Usuario findByUsername(String username) {
+		return client.findByUsername(username);
 	}
 
 }
