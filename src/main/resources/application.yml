@@ -1,4 +1,6 @@
 spring:
+  sleuth:
+    sampler:      probability: 1.0
   application:    name: servicio-oauth
 server:
   port: 9100
